@@ -92,27 +92,67 @@ public class AddTravelActivity extends AppCompatActivity {
 
     public void sendRequest_onClick(View view) throws ParseException, IllegalAccessException {
         try{
-            String clientName = this.editTextClientName.getText().toString() ;
-            String clientPhone = this.editTextClientPhone.getText().toString();
-            String clientEmail =this.editTextClientEmail.getText().toString();
-            Integer numPassengers = Integer.valueOf(this.editTextNumPassengers.getText().toString());
-            Date travelDate = new Travel.DateConverter().fromTimestamp(editTextTravelDate.getText().toString());
-            Date arrivalDate = new Travel.DateConverter().fromTimestamp(editTextArrivalDate.getText().toString());
-            double travelLocationX = Double.parseDouble(this.editTextClientSourceLocX.getText().toString());
-            double travelLocationY = Double.parseDouble(this.editTextClientSourceLocY.getText().toString());
-            UserLocation travelLocation = new UserLocation(travelLocationX,travelLocationY);
+
+            String clientName;
+            if(this.editTextClientName.getText().toString().equals(""))
+                clientName = null;
+            else
+                clientName = this.editTextClientName.getText().toString();
+
+            String clientPhone;
+            if(this.editTextClientPhone.getText().toString().equals(""))
+                clientPhone = null;
+            else
+                clientPhone = this.editTextClientPhone.getText().toString();
+
+            String clientEmail;
+            if(this.editTextClientEmail.getText().toString().equals(""))
+                clientEmail = null;
+            else
+                clientEmail = this.editTextClientEmail.getText().toString();
+
+            Integer numPassengers;
+            if(this.editTextNumPassengers.getText().toString().equals(""))
+                numPassengers = null;
+            else
+                numPassengers = Integer.valueOf(this.editTextNumPassengers.getText().toString());
+
+            Date travelDate;
+            if(this.editTextTravelDate.getText().toString().equals(""))
+                travelDate = null;
+            else
+                travelDate = new Travel.DateConverter().fromTimestamp(editTextTravelDate.getText().toString());
+
+            Date arrivalDate;
+            if(this.editTextArrivalDate.getText().toString().equals(""))
+                arrivalDate = null;
+            else
+                arrivalDate = new Travel.DateConverter().fromTimestamp(editTextArrivalDate.getText().toString());
+
+            double travelLocationX, travelLocationY;
+            UserLocation travelLocation;
+            if(this.editTextClientSourceLocX.getText().toString().equals("") ||
+                    this.editTextClientSourceLocX.getText().toString().equals(""))
+                travelLocation = null;
+            else{
+                travelLocationX = Double.parseDouble(this.editTextClientSourceLocX.getText().toString());
+                travelLocationY = Double.parseDouble(this.editTextClientSourceLocY.getText().toString());
+                travelLocation = new UserLocation(travelLocationX,travelLocationY);
+            }
+
 //        Travel trouble = new Travel( clientName,clientPhone, clientEmail, numPassengers,
 //                travelLocation, destLocations, travelDate, arrivalDate);
             travel.setClientName(clientName);
             travel.setClientPhone(clientPhone);
             travel.setClientEmail(clientEmail);
             travel.setNumPassengers(numPassengers);
-            travel.setTravelLocation(travelLocation);
-            travel.setDestLocations(destLocations);
             travel.setTravelDate(travelDate);
             travel.setArrivalDate(arrivalDate);
+            travel.setTravelLocation(travelLocation);
+            travel.setDestLocations(destLocations);
 
             travelViewModel.saveTravel(travel);
+            editTextViewError.setText("");
         }
         catch(Exception exception){
             editTextViewError.setText(exception.getMessage());
@@ -141,13 +181,18 @@ public class AddTravelActivity extends AppCompatActivity {
     }
 
     public void addLocation_onClick(View view) {
-        double targetLocX = Double.parseDouble(this.editTextClientTargetLocX.getText().toString());
-        double targetLocY = Double.parseDouble(this.editTextClientTargetLocY.getText().toString());
-        UserLocation travelLocation = new UserLocation(targetLocX,targetLocY);
-        destLocations.add(travelLocation);
-        this.editTextClientTargetLocX.setText("");
-        this.editTextClientTargetLocY.setText("");
-        Toast.makeText(AddTravelActivity.this, "The location Added Successfully", Toast.LENGTH_LONG).show();
+        try {
+            double targetLocX = Double.parseDouble(this.editTextClientTargetLocX.getText().toString());
+            double targetLocY = Double.parseDouble(this.editTextClientTargetLocY.getText().toString());
+            UserLocation travelLocation = new UserLocation(targetLocX, targetLocY);
+            destLocations.add(travelLocation);
+            this.editTextClientTargetLocX.setText("");
+            this.editTextClientTargetLocY.setText("");
+            Toast.makeText(AddTravelActivity.this, "The location Added Successfully", Toast.LENGTH_LONG).show();
+        }
+        catch (Exception exception){
+            Toast.makeText(AddTravelActivity.this, "One or more of the fields are missing", Toast.LENGTH_LONG).show();
+        }
     }
 
 

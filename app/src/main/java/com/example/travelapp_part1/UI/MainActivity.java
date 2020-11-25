@@ -1,5 +1,5 @@
 package com.example.travelapp_part1.UI;
-
+// made by Michael Shachor & Naor Bar-Kochva
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
