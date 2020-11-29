@@ -47,14 +47,13 @@ public class AddTravelActivity extends AppCompatActivity {
     EditText editTextArrivalDate;
     List<UserLocation> destLocations;
     Travel travel;
-    boolean errorExist = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityTravelBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_travel);
         //setContentView(R.layout.activity_travel);
-        //setView();
+        setView();
         travel = new Travel();
         destLocations = new LinkedList<>();
         travelViewModel = new ViewModelProvider(this).get(TravelViewModel.class);
@@ -71,18 +70,18 @@ public class AddTravelActivity extends AppCompatActivity {
 
     private void setView(){
 
-        editTextClientName = (EditText) findViewById(R.id.IdClientName);
-        editTextClientPhone = (EditText) findViewById(R.id.IdClientPhone);
-        editTextClientEmail = (EditText) findViewById(R.id.IdClientEmail);
-        editTextNumPassengers = (EditText) findViewById(R.id.IdNumPassengers);
-        editTextTravelDate=(EditText) findViewById(R.id.IdEditDate1);
-        editTextTravelDate.setInputType(InputType.TYPE_NULL);
-        editTextArrivalDate =(EditText) findViewById(R.id.IdEditDate2);
-        editTextArrivalDate.setInputType(InputType.TYPE_NULL);
-        editTextClientTargetLocX = (EditText) findViewById(R.id.IdClientTargetLocX);
-        editTextClientTargetLocY = (EditText) findViewById(R.id.IdClientTargetLocY);
-        editTextClientSourceLocX = (EditText) findViewById(R.id.IdClientSourceLocX);
-        editTextClientSourceLocY = (EditText) findViewById(R.id.IdClientSourceLocY);
+        //editTextClientName = (EditText) findViewById(R.id.IdClientName);
+        //editTextClientPhone = (EditText) findViewById(R.id.IdClientPhone);
+        //editTextClientEmail = (EditText) findViewById(R.id.IdClientEmail);
+        //editTextNumPassengers = (EditText) findViewById(R.id.IdNumPassengers);
+        //editTextTravelDate=(EditText) findViewById(R.id.IdEditDate1);
+        //editTextTravelDate.setInputType(InputType.TYPE_NULL);
+        //editTextArrivalDate =(EditText) findViewById(R.id.IdEditDate2);
+        //editTextArrivalDate.setInputType(InputType.TYPE_NULL);
+        //editTextClientTargetLocX = (EditText) findViewById(R.id.IdClientTargetLocX);
+        //editTextClientTargetLocY = (EditText) findViewById(R.id.IdClientTargetLocY);
+        //editTextClientSourceLocX = (EditText) findViewById(R.id.IdClientSourceLocX);
+        //editTextClientSourceLocY = (EditText) findViewById(R.id.IdClientSourceLocY);
     }
 
     public void sendRequest_onClick(View view) throws ParseException, IllegalAccessException {
@@ -166,7 +165,6 @@ public class AddTravelActivity extends AppCompatActivity {
         int day = calenderDate.get(Calendar.DAY_OF_MONTH);
         int month = calenderDate.get(Calendar.MONTH);
         int year = calenderDate.get(Calendar.YEAR);
-
         // date picker dialog
         picker = new DatePickerDialog(AddTravelActivity.this,
                 new DatePickerDialog.OnDateSetListener() {
@@ -175,6 +173,7 @@ public class AddTravelActivity extends AppCompatActivity {
                         editDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                     }
                 }, year, month, day);
+        picker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         picker.show();
     }
 

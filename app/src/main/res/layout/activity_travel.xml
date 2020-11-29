@@ -7,6 +7,9 @@
         <variable
             name="viewModel"
             type="com.example.travelapp_part1.ui.TravelViewModel" />
+        <variable
+            name="Converter"
+            type="com.example.travelapp_part1.ui.Converter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Number Of Passengers"
                 android:inputType="number"
-                android:text="@={viewModel.form.numPassengers}"
+                android:text="@={Converter.intToString(viewModel.form.numPassengers)}"
                 app:error = "@{viewModel.form.numPassengersError}"
                 app:onFocus="@{viewModel.focusNPassengersChangeListener}"
                 />
@@ -68,13 +71,15 @@
                 android:hint="Travel Begin At" />
 
             <EditText
-                android:id="@+id/IdEditDate1"
+                android:id="@+id/IdEditDateBegin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Enter Date"
-                android:focusableInTouchMode="false"
-                android:onClick="onClickCalender" />
+                android:onClick="onClickCalender"
+                android:text="@={viewModel.form.dateBegin}"
+                app:error = "@{viewModel.form.dateError}"
+                app:onFocus="@{viewModel.focusDateBeginChangeListener}"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -82,13 +87,15 @@
                 android:hint="Travel Ends At" />
 
             <EditText
-                android:id="@+id/IdEditDate2"
+                android:id="@+id/IdEditDateEnd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Enter Date"
-                android:focusableInTouchMode="false"
-                android:onClick="onClickCalender" />
+                android:onClick="onClickCalender"
+                android:text="@={viewModel.form.dateEnd}"
+                app:error = "@{viewModel.form.dateError}"
+                app:onFocus="@{viewModel.focusDateEndChangeListener}"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -152,7 +159,19 @@
                     android:inputType="numberDecimal" />
 
             </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter your name" />
+
+            </com.google.android.material.textfield.TextInputLayout>
             <Button
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"

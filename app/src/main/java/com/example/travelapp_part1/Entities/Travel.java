@@ -86,65 +86,36 @@ public class Travel {
 
 
     public void setClientName(String clientName)  {
-        //	    if (clientName == null)
-//	        throw new IllegalAccessException("missing field: name");
-
         this.clientName = clientName;
     }
 
     public void setClientPhone(String clientPhone)  {
-
-
-//        if (clientPhone == null)
-//            throw new IllegalAccessException("missing field: phone number");
-//	    if (!phone_validation(clientPhone))
-//	        throw new IllegalAccessException("phone number is illegal");
         this.clientPhone = clientPhone;
     }
 
 
 
     public void setClientEmail(String clientEmail) {
-//        if (clientEmail == null)
-//            throw new IllegalAccessException("missing field: email address");
-//        if (!email_validation(clientEmail))
-//            throw new IllegalAccessException("email address is illegal");
         this.clientEmail = clientEmail;
     }
 
     public void setNumPassengers(Integer numPassengers) {
-//        if (numPassengers == null)
-//            throw new IllegalAccessException("missing field: number passengers");
-//        if (numPassengers <= 0)
-//            throw new IllegalAccessException("the number of passengers must be at least 1");
         this.numPassengers = numPassengers;
     }
 
     public void setTravelLocation(UserLocation travelLocation)  {
-//        if (travelLocation == null)
-//            throw new IllegalAccessException("missing field: travel source location");
         this.travelLocation = travelLocation;
     }
 
     public void setDestLocations(List<UserLocation> destLocations) {
-//        if (destLocations == null)
-//            throw new IllegalAccessException("missing field: travel destination locations");
-//        if (destLocations.size() == 0)
-//            throw new IllegalAccessException("the number of destination locations must be at least 1");
         this.destLocations = destLocations;
     }
 
     public void setTravelDate(Date travelDate)  {
-//        if (travelDate == null)
-//            throw new IllegalAccessException("missing field: travel begin date");
         this.travelDate = travelDate;
     }
 
     public void setArrivalDate(Date arrivalDate) {
-//        if (arrivalDate == null)
-//            throw new IllegalAccessException("missing field: travel end date");
-//        if (arrivalDate.before(travelDate))
-//            throw new IllegalAccessException("the travel end date must be after the travel begin date");
         this.arrivalDate = arrivalDate;
     }
 

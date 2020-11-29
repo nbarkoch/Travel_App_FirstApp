@@ -9,10 +9,13 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.travelapp_part1.Data.TravelRepository;
 import com.example.travelapp_part1.Entities.Travel;
+import com.example.travelapp_part1.R;
 
 public class TravelViewModel extends ViewModel {
 
     public FormTravel form = new FormTravel();
+
+    public Converter converter = new Converter();
 
     private TravelRepository repository;
 
@@ -28,9 +31,19 @@ public class TravelViewModel extends ViewModel {
         return focusNPassengersChangeListener;
     }
 
+    public View.OnFocusChangeListener getFocusDateBeginChangeListener() {
+        return focusDateBeginChangeListener;
+    }
+
+    public View.OnFocusChangeListener getFocusDateEndChangeListener() {
+        return focusDateEndChangeListener;
+    }
+
     private View.OnFocusChangeListener focusEmailChangeListener;
     private View.OnFocusChangeListener focusPhoneChangeListener;
     private View.OnFocusChangeListener focusNPassengersChangeListener;
+    private View.OnFocusChangeListener focusDateBeginChangeListener;
+    private View.OnFocusChangeListener focusDateEndChangeListener;
 
     public TravelViewModel() {
         repository = TravelRepository.getInstance();
@@ -58,6 +71,28 @@ public class TravelViewModel extends ViewModel {
                 EditText et = (EditText) view;
                 if (et.getText().length() > 0 && !hasFocus) {
                     form.isNumPassengersValid(true);
+                }
+            }
+        };
+        focusDateBeginChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                EditText et = (EditText) view;
+                if (hasFocus)
+                    et.callOnClick();
+                if (et.getText().length() > 0 && !hasFocus) {
+                    form.isDatesValid(true);
+                }
+            }
+        };
+        focusDateEndChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                EditText et = (EditText) view;
+                if (hasFocus)
+                    et.callOnClick();
+                if (et.getText().length() > 0 && !hasFocus) {
+                    form.isDatesValid(true);
                 }
             }
         };

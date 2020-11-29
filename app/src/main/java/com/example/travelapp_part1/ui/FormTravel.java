@@ -1,23 +1,34 @@
 package com.example.travelapp_part1.ui;
 
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingAdapter;
+import androidx.databinding.InverseMethod;
 import androidx.databinding.ObservableField;
 
 import com.example.travelapp_part1.BR;
 import com.example.travelapp_part1.R;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FormTravel extends BaseObservable {
     private String email;
     private String phoneNumber;
-    private String numPassengers;
+    private Integer numPassengers;
+    private String dateBegin;
+    private String dateEnd;
+    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
 
     public ObservableField<Integer> phoneError = new ObservableField<>();
     public ObservableField<Integer> emailError = new ObservableField<>();
@@ -44,7 +55,7 @@ public class FormTravel extends BaseObservable {
         boolean validPhoneNumber = isPhoneValid(false);
         boolean validEmail = isEmailValid(false);
         boolean validNumPassengers = isNumPassengersValid(false);
-        return  validPhoneNumber && validEmail && validNumPassengers;
+        return  isDatesValid(false) && validPhoneNumber && validEmail && validNumPassengers;
     }
 
     public void setPhoneNumber(String phoneNumber) {
@@ -57,8 +68,18 @@ public class FormTravel extends BaseObservable {
         notifyPropertyChanged(BR.valid);
     }
 
-    public void setNumPassengers(String numPassengers) {
+    public void setNumPassengers(Integer numPassengers) {
         this.numPassengers = numPassengers;
+        notifyPropertyChanged(BR.valid);
+    }
+
+    public void setDateBegin(String dateBegin){
+        this.dateBegin = dateBegin;
+        notifyPropertyChanged(BR.valid);
+    }
+
+    public void setDateEnd(String dateEnd){
+        this.dateEnd = dateEnd;
         notifyPropertyChanged(BR.valid);
     }
 
@@ -74,8 +95,18 @@ public class FormTravel extends BaseObservable {
     }
 
     @Bindable
-    public String getNumPassengers() {
+    public Integer getNumPassengers() {
         return numPassengers;
+    }
+
+    @Bindable
+    public String getDateBegin() {
+        return dateBegin;
+    }
+
+    @Bindable
+    public String getDateEnd() {
+        return dateEnd;
     }
 
 
@@ -114,7 +145,7 @@ public class FormTravel extends BaseObservable {
     public boolean isNumPassengersValid(boolean setMsg){
         if(numPassengers == null)
             return false;
-        if (Integer.parseInt(numPassengers) <= 0){
+        if (numPassengers <= 0){
             if(setMsg)
                 numPassengersError.set(R.string.numPassengers_not_valid);
             return false;
@@ -122,5 +153,25 @@ public class FormTravel extends BaseObservable {
         numPassengersError.set(null);
         return true;
     }
+
+    public boolean isDatesValid(boolean setMsg){
+        if(dateBegin == null || dateEnd == null)
+            return false;
+        try {
+            if(format.parse(dateBegin).after(format.parse(dateEnd))) {
+                if (setMsg)
+                    dateError.set(R.string.date_not_valid);
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        dateError.set(null);
+        return true;
+    }
+
+
+
+
 
 }

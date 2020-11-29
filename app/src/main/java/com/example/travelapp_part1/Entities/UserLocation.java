@@ -1,21 +1,30 @@
 package com.example.travelapp_part1.Entities;
 
-// temporary with no use and unknown details...
-public class UserLocation {
-    private double x;
-    private double y;
+import android.location.Location;
 
-    public UserLocation(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
+public class UserLocation {
+    private Double lat;
+    private Double lon;
 
     public double getLat() {
-        return x;
+        return lat;
     }
 
     public double getLon() {
-        return y;
+        return lon;
     }
 
+    public UserLocation(double lat, double lon) {
+        this.lat = lat;
+        this.lon = lon;
+    }
+
+    public UserLocation() {
+    }
+
+    public UserLocation convertFromLocation(Location location){
+        if (location==null)
+            return null;
+        return new UserLocation(location.getLatitude(),location.getLongitude());
+    }
 }
