@@ -10,8 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelApp_part1">
         <activity
-            android:name=".UI.AddTravelActivity"></activity>
-        <activity android:name=".UI.MainActivity">
+            android:name=".ui.AddTravelActivity"></activity>
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

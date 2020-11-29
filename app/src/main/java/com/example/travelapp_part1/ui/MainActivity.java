@@ -1,4 +1,4 @@
-package com.example.travelapp_part1.UI;
+package com.example.travelapp_part1.ui;
 // made by Michael Shachor & Naor Bar-Kochva
 import androidx.appcompat.app.AppCompatActivity;
 

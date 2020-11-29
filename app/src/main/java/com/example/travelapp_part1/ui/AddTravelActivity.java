@@ -1,6 +1,7 @@
-package com.example.travelapp_part1.UI;
+package com.example.travelapp_part1.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -17,11 +18,11 @@ import android.widget.Toast;
 import com.example.travelapp_part1.Entities.Travel;
 import com.example.travelapp_part1.Entities.UserLocation;
 import com.example.travelapp_part1.R;
+import com.example.travelapp_part1.databinding.ActivityTravelBinding;
 
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 // !!!!
@@ -32,7 +33,7 @@ public class AddTravelActivity extends AppCompatActivity {
     // google map
 
 
-    protected TravelViewModel travelViewModel;
+    private TravelViewModel travelViewModel;
     private EditText editTextClientName;
     private EditText editTextClientPhone;
     private EditText editTextClientEmail;
@@ -51,25 +52,21 @@ public class AddTravelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_travel);
-        setView();
+        ActivityTravelBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_travel);
+        //setContentView(R.layout.activity_travel);
+        //setView();
+
         travel = new Travel();
         destLocations = new LinkedList<>();
         travelViewModel = new ViewModelProvider(this).get(TravelViewModel.class);
-        travelViewModel.getIsSuccess().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean bool) {
-            Toast.makeText(AddTravelActivity.this, bool.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
-                Log.e("Alert","Lets See if it Works !!!" + paramThread.getName());
-                errorExist = true;
-            }
-        });
+//        travelViewModel.getIsSuccess().observe(this, new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean bool) {
+//            Toast.makeText(AddTravelActivity.this, bool.toString(), Toast.LENGTH_LONG).show();
+//            }
+//        });
+        binding.setViewModel(travelViewModel);
+     //   binding.setLifecycleOwner(this);
     }
 
 
@@ -160,6 +157,9 @@ public class AddTravelActivity extends AppCompatActivity {
 
     }
 
+    public void addRequest_onClick(View view){
+        Toast.makeText(AddTravelActivity.this, "Michael ha Gever", Toast.LENGTH_LONG).show();
+    }
 
     public void onClickCalender(View view) {
         EditText editDate = (EditText)view;
