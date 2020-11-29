@@ -3,5 +3,5 @@
     <string name="empty_field_error">The field can\'t be empty</string>
     <string name="email_not_valid">Email not valid</string>
     <string name="phone_not_valid">phone number is illegal</string>
-    <string name="numPassengers_not_valid">number of passengers is illegal</string>
+    <string name="numPassengers_not_valid">number of passengers should be at least one</string>
 </resources>

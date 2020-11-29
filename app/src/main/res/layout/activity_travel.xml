@@ -57,7 +57,9 @@
                 android:layout_height="wrap_content"
                 android:hint="Number Of Passengers"
                 android:inputType="number"
-
+                android:text="@={viewModel.form.numPassengers}"
+                app:error = "@{viewModel.form.numPassengersError}"
+                app:onFocus="@{viewModel.focusNPassengersChangeListener}"
                 />
 
             <TextView
@@ -71,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Enter Date"
+                android:focusableInTouchMode="false"
                 android:onClick="onClickCalender" />
 
             <TextView
@@ -84,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Enter Date"
+                android:focusableInTouchMode="false"
                 android:onClick="onClickCalender" />
 
             <TextView
@@ -154,15 +158,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="send"
-                android:onClick="sendRequest_onClick"
+                android:onClick="addRequest_onClick"
                 android:enabled="@{viewModel.form.valid}"/>
-
-            <TextView
-                android:id="@+id/IdTextViewError"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text=""
-                android:textColor="#ff00" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

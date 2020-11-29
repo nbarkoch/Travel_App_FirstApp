@@ -24,8 +24,13 @@ public class TravelViewModel extends ViewModel {
         return focusPhoneChangeListener;
     }
 
+    public View.OnFocusChangeListener getFocusNPassengersChangeListener() {
+        return focusNPassengersChangeListener;
+    }
+
     private View.OnFocusChangeListener focusEmailChangeListener;
     private View.OnFocusChangeListener focusPhoneChangeListener;
+    private View.OnFocusChangeListener focusNPassengersChangeListener;
 
     public TravelViewModel() {
         repository = TravelRepository.getInstance();
@@ -44,6 +49,15 @@ public class TravelViewModel extends ViewModel {
                 EditText et = (EditText) view;
                 if (et.getText().length() > 0 && !hasFocus) {
                     form.isEmailValid(true);
+                }
+            }
+        };
+        focusNPassengersChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                EditText et = (EditText) view;
+                if (et.getText().length() > 0 && !hasFocus) {
+                    form.isNumPassengersValid(true);
                 }
             }
         };
@@ -74,6 +88,8 @@ public class TravelViewModel extends ViewModel {
             editText.setOnFocusChangeListener(onFocusChangeListener);
         }
     }
+
+
 
     /// check if the fields are valid
     //

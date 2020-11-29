@@ -55,16 +55,15 @@ public class AddTravelActivity extends AppCompatActivity {
         ActivityTravelBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_travel);
         //setContentView(R.layout.activity_travel);
         //setView();
-
         travel = new Travel();
         destLocations = new LinkedList<>();
         travelViewModel = new ViewModelProvider(this).get(TravelViewModel.class);
-//        travelViewModel.getIsSuccess().observe(this, new Observer<Boolean>() {
-//            @Override
-//            public void onChanged(Boolean bool) {
-//            Toast.makeText(AddTravelActivity.this, bool.toString(), Toast.LENGTH_LONG).show();
-//            }
-//        });
+        travelViewModel.getIsSuccess().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+            Toast.makeText(AddTravelActivity.this, bool.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
         binding.setViewModel(travelViewModel);
      //   binding.setLifecycleOwner(this);
     }
@@ -84,7 +83,6 @@ public class AddTravelActivity extends AppCompatActivity {
         editTextClientTargetLocY = (EditText) findViewById(R.id.IdClientTargetLocY);
         editTextClientSourceLocX = (EditText) findViewById(R.id.IdClientSourceLocX);
         editTextClientSourceLocY = (EditText) findViewById(R.id.IdClientSourceLocY);
-        editTextViewError = (TextView) findViewById(R.id.IdTextViewError);
     }
 
     public void sendRequest_onClick(View view) throws ParseException, IllegalAccessException {

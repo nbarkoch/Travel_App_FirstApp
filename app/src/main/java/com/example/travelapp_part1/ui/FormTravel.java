@@ -1,7 +1,11 @@
 package com.example.travelapp_part1.ui;
 
+import android.widget.TextView;
+
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.InverseBindingAdapter;
 import androidx.databinding.ObservableField;
 
 import com.example.travelapp_part1.BR;
@@ -13,7 +17,7 @@ import java.util.regex.Pattern;
 public class FormTravel extends BaseObservable {
     private String email;
     private String phoneNumber;
-    private Integer numPassengers;
+    private String numPassengers;
 
     public ObservableField<Integer> phoneError = new ObservableField<>();
     public ObservableField<Integer> emailError = new ObservableField<>();
@@ -21,10 +25,26 @@ public class FormTravel extends BaseObservable {
     public ObservableField<Integer> dateError = new ObservableField<>();
 
 
+//    @InverseBindingAdapter(attribute = "android:text")
+//    public static int getText(TextView view) {
+//        return Integer.parseInt(view.getText().toString());
+//    }
+//
+//    @BindingAdapter("android:text")
+//    public static void setText(TextView view, int value) {
+//        if (view.getText() != null
+//                && ( !view.getText().toString().isEmpty() )
+//                && Integer.parseInt(view.getText().toString()) != value) {
+//            view.setText(Integer.toString(value));
+//        }
+//    }
+
     @Bindable
     public boolean isValid() {
-        boolean valid = isPhoneValid(false);
-        return  isEmailValid(false) && valid;// && isNumPassengersValid();
+        boolean validPhoneNumber = isPhoneValid(false);
+        boolean validEmail = isEmailValid(false);
+        boolean validNumPassengers = isNumPassengersValid(false);
+        return  validPhoneNumber && validEmail && validNumPassengers;
     }
 
     public void setPhoneNumber(String phoneNumber) {
@@ -37,9 +57,9 @@ public class FormTravel extends BaseObservable {
         notifyPropertyChanged(BR.valid);
     }
 
-    public void setNumPassengers(Integer numPassengers) {
+    public void setNumPassengers(String numPassengers) {
         this.numPassengers = numPassengers;
-       // notifyPropertyChanged(BR.valid);
+        notifyPropertyChanged(BR.valid);
     }
 
 
@@ -54,7 +74,7 @@ public class FormTravel extends BaseObservable {
     }
 
     @Bindable
-    public Integer getNumPassengers() {
+    public String getNumPassengers() {
         return numPassengers;
     }
 
@@ -66,11 +86,8 @@ public class FormTravel extends BaseObservable {
     }
 
     public boolean isPhoneValid(boolean setMsg) {
-        if(email == null){
-            if(setMsg)
-                phoneError.set(R.string.empty_field_error);
+        if(phoneNumber == null)
             return false;
-        }
         String regex = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$";
         if (!RegexValidation(phoneNumber,regex)) {
             if(setMsg)
@@ -82,11 +99,8 @@ public class FormTravel extends BaseObservable {
     }
 
     public boolean isEmailValid(boolean setMsg) {
-        if(email == null){
-            if(setMsg)
-                emailError.set(R.string.empty_field_error);
+        if(email == null)
             return false;
-        }
         String regex = "^(.+)@(.+)$";
         if (!RegexValidation(email,regex)) {
             if(setMsg)
@@ -97,13 +111,12 @@ public class FormTravel extends BaseObservable {
         return true;
     }
 
-    public boolean isNumPassengersValid(){
-        if(numPassengers == null){
-            emailError.set(R.string.empty_field_error);
+    public boolean isNumPassengersValid(boolean setMsg){
+        if(numPassengers == null)
             return false;
-        }
-        if (numPassengers <= 0){
-            numPassengersError.set(R.string.numPassengers_not_valid);
+        if (Integer.parseInt(numPassengers) <= 0){
+            if(setMsg)
+                numPassengersError.set(R.string.numPassengers_not_valid);
             return false;
         }
         numPassengersError.set(null);
