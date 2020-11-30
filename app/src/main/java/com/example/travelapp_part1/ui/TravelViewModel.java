@@ -1,9 +1,14 @@
 package com.example.travelapp_part1.ui;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
+import androidx.databinding.InverseBindingAdapter;
+import androidx.databinding.InverseBindingListener;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -15,7 +20,7 @@ public class TravelViewModel extends ViewModel {
 
     public FormTravel form = new FormTravel();
 
-    public Converter converter = new Converter();
+
 
     private TravelRepository repository;
 
@@ -128,4 +133,6 @@ public class TravelViewModel extends ViewModel {
 
     /// check if the fields are valid
     //
+
+
 }

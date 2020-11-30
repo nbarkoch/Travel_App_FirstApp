@@ -1,5 +1,7 @@
 package com.example.travelapp_part1.ui;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -8,10 +10,12 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingAdapter;
+import androidx.databinding.InverseBindingListener;
 import androidx.databinding.InverseMethod;
 import androidx.databinding.ObservableField;
 
 import com.example.travelapp_part1.BR;
+import com.example.travelapp_part1.Entities.Travel;
 import com.example.travelapp_part1.R;
 
 import java.sql.Time;
@@ -25,9 +29,9 @@ public class FormTravel extends BaseObservable {
     private String email;
     private String phoneNumber;
     private Integer numPassengers;
-    private String dateBegin;
-    private String dateEnd;
-    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    private Date dateBegin;
+    private Date dateEnd;
+    static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
 
     public ObservableField<Integer> phoneError = new ObservableField<>();
@@ -73,12 +77,12 @@ public class FormTravel extends BaseObservable {
         notifyPropertyChanged(BR.valid);
     }
 
-    public void setDateBegin(String dateBegin){
+    public void setDateBegin(Date dateBegin){
         this.dateBegin = dateBegin;
         notifyPropertyChanged(BR.valid);
     }
 
-    public void setDateEnd(String dateEnd){
+    public void setDateEnd(Date dateEnd){
         this.dateEnd = dateEnd;
         notifyPropertyChanged(BR.valid);
     }
@@ -100,12 +104,12 @@ public class FormTravel extends BaseObservable {
     }
 
     @Bindable
-    public String getDateBegin() {
+    public Date getDateBegin() {
         return dateBegin;
     }
 
     @Bindable
-    public String getDateEnd() {
+    public Date getDateEnd() {
         return dateEnd;
     }
 
@@ -157,14 +161,10 @@ public class FormTravel extends BaseObservable {
     public boolean isDatesValid(boolean setMsg){
         if(dateBegin == null || dateEnd == null)
             return false;
-        try {
-            if(format.parse(dateBegin).after(format.parse(dateEnd))) {
-                if (setMsg)
-                    dateError.set(R.string.date_not_valid);
-                return false;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(dateBegin.after(dateEnd)) {
+            if (setMsg)
+                dateError.set(R.string.date_not_valid);
+            return false;
         }
         dateError.set(null);
         return true;
@@ -172,6 +172,81 @@ public class FormTravel extends BaseObservable {
 
 
 
+    @BindingAdapter("android:text")
+    public static void setIntegerText(TextView view, Integer value) {
+        boolean setValue = view.getText().length() == 0;
+        try {
+            if (!setValue) {
+                setValue = Integer.parseInt(view.getText().toString()) != value;
+            }
+        } catch (NumberFormatException e) {
+            return;
+        }
+//        if (setValue) {
+//            view.setText(String.valueOf(value));
+//        }
+    }
+
+    @InverseBindingAdapter(attribute = "android:text")
+    public static Integer getIntegerText(TextView view) {
+        try {
+            return Integer.parseInt(view.getText().toString());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+
+
+
+    @BindingAdapter("android:text")
+    public static void setDateText(TextView view, Date value) {
+        boolean setValue = view.getText().length() == 0;
+        try {
+            if (!setValue) {
+                setValue = format.parse(view.getText().toString()) != value;
+            }
+        } catch (ParseException e) {
+        }
+    }
+
+    @InverseBindingAdapter(attribute = "android:text")
+    public static Date getDateText(TextView view) {
+        try {
+            return format.parse(view.getText().toString());
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+
+///// ?????
+    @BindingAdapter(value = {"onTextChange", "textAttrChanged"}, requireAll = false)
+    public static void setTextListener(TextView view,
+                                       final TextWatcher listener,
+                                       final InverseBindingListener textChange) {
+        if (textChange == null) {
+            view.addTextChangedListener(listener);
+        } else {
+            view.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (listener != null){
+                        listener.onTextChanged(s, start, before, count);
+                    }
+                    else {
+                        textChange.onChange();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        }
+    }
 
 
 }

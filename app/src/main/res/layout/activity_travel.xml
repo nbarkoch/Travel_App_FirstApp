@@ -7,9 +7,6 @@
         <variable
             name="viewModel"
             type="com.example.travelapp_part1.ui.TravelViewModel" />
-        <variable
-            name="Converter"
-            type="com.example.travelapp_part1.ui.Converter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Number Of Passengers"
                 android:inputType="number"
-                android:text="@={Converter.intToString(viewModel.form.numPassengers)}"
+                android:text="@={viewModel.form.numPassengers}"
                 app:error = "@{viewModel.form.numPassengersError}"
                 app:onFocus="@{viewModel.focusNPassengersChangeListener}"
                 />
