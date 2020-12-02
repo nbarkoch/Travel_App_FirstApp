@@ -19,7 +19,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCBNh17AJ5m8vloX1XSvzguuMW7a1VtF3A" />
+            android:value="You-Key_Here" />
 
         <activity android:name=".ui.AddLocationActivity"></activity>
         <activity android:name=".ui.AddTravelActivity" />
