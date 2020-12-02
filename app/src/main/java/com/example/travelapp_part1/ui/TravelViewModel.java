@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.travelapp_part1.Data.TravelRepository;
 import com.example.travelapp_part1.Entities.Travel;
 import com.example.travelapp_part1.R;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class TravelViewModel extends ViewModel {
 
@@ -83,7 +84,7 @@ public class TravelViewModel extends ViewModel {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 EditText et = (EditText) view;
-                if (hasFocus)
+                if (hasFocus && (et.getError() == null))
                     et.callOnClick();
                 if (et.getText().length() > 0 && !hasFocus) {
                     form.isDatesValid(true);
@@ -94,7 +95,7 @@ public class TravelViewModel extends ViewModel {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 EditText et = (EditText) view;
-                if (hasFocus)
+                if (hasFocus && (et.getError() == null))
                     et.callOnClick();
                 if (et.getText().length() > 0 && !hasFocus) {
                     form.isDatesValid(true);
@@ -133,6 +134,5 @@ public class TravelViewModel extends ViewModel {
 
     /// check if the fields are valid
     //
-
 
 }

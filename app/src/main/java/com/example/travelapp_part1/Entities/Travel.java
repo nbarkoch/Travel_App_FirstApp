@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.annotations.NotNull;
 
 import java.text.ParseException;
@@ -52,14 +53,22 @@ public class Travel {
     public String getClientName() {return this.clientName; }
     public String getClientPhone() {return this.clientPhone; }
     public String getClientEmail() {return this.clientEmail; }
+    @Exclude
     public Integer getNumPassengers() { return this.numPassengers; }
     public String getTravelLocation() {return new UserLocationConverter().asString(this.travelLocation);}
     public List<UserLocation> getDestLocations() { return destLocations; }
+    @Exclude
     public Integer getRequestType() { return RequestType.getTypeInt(this.requestType);}
-    public String getTravelDate() { return new DateConverter().dateToTimestamp(this.travelDate);}
-    public String getArrivalDate() { return new DateConverter().dateToTimestamp(this.arrivalDate);}
-    public String getCompany() { return new CompanyConverter().asString(this.company);}
-
+    @Exclude
+    public Date getTravelDate() { return this.travelDate;}
+    @Exclude
+    public Date getArrivalDate() { return this.arrivalDate;}
+    public HashMap<String, Boolean> getCompany() { return this.company;}
+    //
+    public String getRequest_Type() { return RequestType.getTypeInt(this.requestType).toString();}
+    public String getNumberPassengers() {return this.numPassengers.toString();}
+    public String getTravel_Date() { return new DateConverter().dateToTimestamp(this.travelDate);}
+    public String getArrival_Date() { return new DateConverter().dateToTimestamp(this.arrivalDate);}
 
     public Travel() {
     }

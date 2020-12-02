@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -21,6 +24,7 @@ import com.example.travelapp_part1.R;
 import com.example.travelapp_part1.databinding.ActivityTravelBinding;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -45,15 +49,19 @@ public class AddTravelActivity extends AppCompatActivity {
     private TextView editTextViewError;
     EditText editTextTravelDate;
     EditText editTextArrivalDate;
+    UserLocation sourceLocation;
     List<UserLocation> destLocations;
     Travel travel;
+
+    MyRecyclerViewAdapter adapter;
+    RecyclerView recyclerView;
+    List<String> userLocationsView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityTravelBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_travel);
         //setContentView(R.layout.activity_travel);
-        setView();
         travel = new Travel();
         destLocations = new LinkedList<>();
         travelViewModel = new ViewModelProvider(this).get(TravelViewModel.class);
@@ -64,25 +72,14 @@ public class AddTravelActivity extends AppCompatActivity {
             }
         });
         binding.setViewModel(travelViewModel);
-     //   binding.setLifecycleOwner(this);
+        // set up the RecyclerView
+        userLocationsView = new ArrayList<String>();
+        recyclerView = findViewById(R.id.recyclerview);
+        adapter = new MyRecyclerViewAdapter(this, userLocationsView);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-
-    private void setView(){
-
-        //editTextClientName = (EditText) findViewById(R.id.IdClientName);
-        //editTextClientPhone = (EditText) findViewById(R.id.IdClientPhone);
-        //editTextClientEmail = (EditText) findViewById(R.id.IdClientEmail);
-        //editTextNumPassengers = (EditText) findViewById(R.id.IdNumPassengers);
-        //editTextTravelDate=(EditText) findViewById(R.id.IdEditDate1);
-        //editTextTravelDate.setInputType(InputType.TYPE_NULL);
-        //editTextArrivalDate =(EditText) findViewById(R.id.IdEditDate2);
-        //editTextArrivalDate.setInputType(InputType.TYPE_NULL);
-        //editTextClientTargetLocX = (EditText) findViewById(R.id.IdClientTargetLocX);
-        //editTextClientTargetLocY = (EditText) findViewById(R.id.IdClientTargetLocY);
-        //editTextClientSourceLocX = (EditText) findViewById(R.id.IdClientSourceLocX);
-        //editTextClientSourceLocY = (EditText) findViewById(R.id.IdClientSourceLocY);
-    }
 
     public void sendRequest_onClick(View view) throws ParseException, IllegalAccessException {
         try{
@@ -178,17 +175,20 @@ public class AddTravelActivity extends AppCompatActivity {
     }
 
     public void addLocation_onClick(View view) {
-        try {
-            double targetLocX = Double.parseDouble(this.editTextClientTargetLocX.getText().toString());
-            double targetLocY = Double.parseDouble(this.editTextClientTargetLocY.getText().toString());
-            UserLocation travelLocation = new UserLocation(targetLocX, targetLocY);
-            destLocations.add(travelLocation);
-            this.editTextClientTargetLocX.setText("");
-            this.editTextClientTargetLocY.setText("");
-            Toast.makeText(AddTravelActivity.this, "The location Added Successfully", Toast.LENGTH_LONG).show();
-        }
-        catch (Exception exception){
-            Toast.makeText(AddTravelActivity.this, "One or more of the fields are missing", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, AddLocationActivity.class);
+        startActivityForResult(intent,0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(data != null) {
+            Bundle LocationsData = data.getExtras();
+            sourceLocation = (UserLocation) LocationsData.getParcelable("SRC_LOC");
+            destLocations =  data.getParcelableArrayListExtra("LIST_DST");
+            userLocationsView.clear();
+            userLocationsView.addAll(data.getStringArrayListExtra("LIST_VIEW"));
+            adapter.notifyDataSetChanged();
         }
     }
 

@@ -39,21 +39,6 @@ public class FormTravel extends BaseObservable {
     public ObservableField<Integer> numPassengersError = new ObservableField<>();
     public ObservableField<Integer> dateError = new ObservableField<>();
 
-
-//    @InverseBindingAdapter(attribute = "android:text")
-//    public static int getText(TextView view) {
-//        return Integer.parseInt(view.getText().toString());
-//    }
-//
-//    @BindingAdapter("android:text")
-//    public static void setText(TextView view, int value) {
-//        if (view.getText() != null
-//                && ( !view.getText().toString().isEmpty() )
-//                && Integer.parseInt(view.getText().toString()) != value) {
-//            view.setText(Integer.toString(value));
-//        }
-//    }
-
     @Bindable
     public boolean isValid() {
         boolean validPhoneNumber = isPhoneValid(false);

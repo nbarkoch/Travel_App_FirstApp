@@ -50,7 +50,6 @@
                 app:error = "@{viewModel.form.emailError}"
                 app:onFocus="@{viewModel.focusEmailChangeListener}"
                 />
-
             <EditText
                 android:id="@+id/IdNumPassengers"
                 android:layout_width="match_parent"
@@ -61,7 +60,6 @@
                 app:error = "@{viewModel.form.numPassengersError}"
                 app:onFocus="@{viewModel.focusNPassengersChangeListener}"
                 />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,37 +93,24 @@
                 app:onFocus="@{viewModel.focusDateEndChangeListener}"/>
 
             <TextView
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Travel Source" />
+                android:background="#3C85B6"
+                android:text="@string/select_location_description"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/IdClientSourceLocX"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="source x"
-                    android:inputType="numberDecimal" />
-
-                <EditText
-                    android:id="@+id/IdClientSourceLocY"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="source y"
-                    android:inputType="numberDecimal" />
 
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Travel Destinations" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -136,39 +121,22 @@
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="add location"
+                    android:text="add locations"
                     android:onClick="addLocation_onClick" />
 
-                <EditText
-                    android:id="@+id/IdClientTargetLocX"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:hint="target x"
-                    android:inputType="numberDecimal" />
-
-                <EditText
-                    android:id="@+id/IdClientTargetLocY"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:hint="target y"
-                    android:inputType="numberDecimal" />
-
             </LinearLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text"
+                android:hint="first location is source location"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60sp">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Enter your name" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
             <Button
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
