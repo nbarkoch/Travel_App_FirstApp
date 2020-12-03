@@ -21,11 +21,13 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class TravelViewModel extends ViewModel {
 
     public FormTravel form = new FormTravel();
-    static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+
 
 
     private TravelRepository repository;
@@ -51,60 +53,44 @@ public class TravelViewModel extends ViewModel {
     }
 
     private View.OnFocusChangeListener focusEmailChangeListener;
-    private View.OnFocusChangeListener focusPhoneChangeListener;
+    private View.OnFocusChangeListener focusPhoneChangeListener = (view, hasFocus) -> {
+        EditText et = (EditText) view;
+        if (et.getText().length() > 0 && !hasFocus) {
+            form.isPhoneValid(true);
+        }
+    };
     private View.OnFocusChangeListener focusNPassengersChangeListener;
     private View.OnFocusChangeListener focusDateBeginChangeListener;
     private View.OnFocusChangeListener focusDateEndChangeListener;
 
     public TravelViewModel() {
         repository = TravelRepository.getInstance();
-        focusPhoneChangeListener = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                EditText et = (EditText) view;
-                if (et.getText().length() > 0 && !hasFocus) {
-                    form.isPhoneValid(true);
-                }
+        focusEmailChangeListener = (view, hasFocus) -> {
+            EditText et = (EditText) view;
+            if (et.getText().length() > 0 && !hasFocus) {
+                form.isEmailValid(true);
             }
         };
-        focusEmailChangeListener = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                EditText et = (EditText) view;
-                if (et.getText().length() > 0 && !hasFocus) {
-                    form.isEmailValid(true);
-                }
+        focusNPassengersChangeListener = (view, hasFocus) -> {
+            EditText et = (EditText) view;
+            if (et.getText().length() > 0 && !hasFocus) {
+                form.isNumPassengersValid(true);
             }
         };
-        focusNPassengersChangeListener = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                EditText et = (EditText) view;
-                if (et.getText().length() > 0 && !hasFocus) {
-                    form.isNumPassengersValid(true);
-                }
+        focusDateBeginChangeListener = (view, hasFocus) -> {
+            EditText et = (EditText) view;
+            if (hasFocus && (et.getError() == null))
+                et.callOnClick();
+            if (et.getText().length() > 0 && !hasFocus) {
+                form.isDatesValid(true);
             }
         };
-        focusDateBeginChangeListener = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                EditText et = (EditText) view;
-                if (hasFocus && (et.getError() == null))
-                    et.callOnClick();
-                if (et.getText().length() > 0 && !hasFocus) {
-                    form.isDatesValid(true);
-                }
-            }
-        };
-        focusDateEndChangeListener = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                EditText et = (EditText) view;
-                if (hasFocus && (et.getError() == null))
-                    et.callOnClick();
-                if (et.getText().length() > 0 && !hasFocus) {
-                    form.isDatesValid(true);
-                }
+        focusDateEndChangeListener = (view, hasFocus) -> {
+            EditText et = (EditText) view;
+            if (hasFocus && (et.getError() == null))
+                et.callOnClick();
+            if (et.getText().length() > 0 && !hasFocus) {
+                form.isDatesValid(true);
             }
         };
     }
@@ -113,8 +99,9 @@ public class TravelViewModel extends ViewModel {
         saveTravel(form.getTravel());
     }
 
-    public void saveTravel(Travel trouble) {
-        TravelRepository.saveTravel(trouble);
+    public void saveTravel(Travel travel) {
+        travel.setRequestType(Travel.RequestType.sent);
+        TravelRepository.saveTravel(travel);
     }
 
     public LiveData<Boolean> getIsSuccess() {
@@ -148,7 +135,7 @@ public class TravelViewModel extends ViewModel {
                 setValue = Integer.parseInt(view.getText().toString()) != value;
             }
         } catch (NumberFormatException e) {
-            return;
+            //return;
         }
 //        if (setValue) {
 //            view.setText(String.valueOf(value));

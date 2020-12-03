@@ -19,9 +19,9 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="code" />
+            android:value="AIzaSyCBNh17AJ5m8vloX1XSvzguuMW7a1VtF3A" />
 
-        <activity android:name=".ui.AddLocationActivity"></activity>
+        <activity android:name=".ui.AddLocationActivity"/>
         <activity android:name=".ui.AddTravelActivity" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>

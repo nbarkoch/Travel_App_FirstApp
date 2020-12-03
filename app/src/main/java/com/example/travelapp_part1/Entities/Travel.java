@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
 
 
 @Entity
-@IgnoreExtraProperties
 public class Travel {
     @NonNull
     @PrimaryKey
@@ -55,25 +54,15 @@ public class Travel {
     public String getClientName() {return this.clientName; }
     public String getClientPhone() {return this.clientPhone; }
     public String getClientEmail() {return this.clientEmail; }
-    @Exclude
+    //
     public Integer getNumPassengers() { return this.numPassengers; }
-    @Exclude
     public UserLocation getTravelLocation() {return this.travelLocation;}
-    @Exclude
     public List<UserLocation> getDestLocations() { return destLocations; }
-    @Exclude
-    public Integer getRequestType() { return RequestType.getTypeInt(this.requestType);}
-    @Exclude
+    public RequestType getRequestType() { return this.requestType;}
     public Date getTravelDate() { return this.travelDate;}
-    @Exclude
     public Date getArrivalDate() { return this.arrivalDate;}
     public HashMap<String, Boolean> getCompany() { return this.company;}
-    //
-    //public String getTravel_Location() {return new UserLocationConverter().asString(this.travelLocation);}
-    public String getRequest_Type() { return RequestType.getTypeInt(this.requestType).toString();}
-    public String getNumberPassengers() {return this.numPassengers.toString();}
-    public String getTravel_Date() { return new DateConverter().dateToTimestamp(this.travelDate);}
-    public String getArrival_Date() { return new DateConverter().dateToTimestamp(this.arrivalDate);}
+
 
     public Travel() {
     }
@@ -98,6 +87,13 @@ public class Travel {
 	        this.travelId = id;
     }
 
+    public void setCompany(HashMap<String, Boolean> company) {
+        this.company = company;
+    }
+
+    public void setRequestType(RequestType requestType) {
+        this.requestType = requestType;
+    }
 
     public void setClientName(String clientName)  {
         this.clientName = clientName;
