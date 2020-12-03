@@ -7,6 +7,7 @@ import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.annotations.NotNull;
 
 import java.text.ParseException;
@@ -20,6 +21,7 @@ import java.util.regex.Pattern;
 
 
 @Entity
+@IgnoreExtraProperties
 public class Travel {
     @NonNull
     @PrimaryKey
@@ -55,7 +57,9 @@ public class Travel {
     public String getClientEmail() {return this.clientEmail; }
     @Exclude
     public Integer getNumPassengers() { return this.numPassengers; }
-    public String getTravelLocation() {return new UserLocationConverter().asString(this.travelLocation);}
+    @Exclude
+    public UserLocation getTravelLocation() {return this.travelLocation;}
+    @Exclude
     public List<UserLocation> getDestLocations() { return destLocations; }
     @Exclude
     public Integer getRequestType() { return RequestType.getTypeInt(this.requestType);}
@@ -65,6 +69,7 @@ public class Travel {
     public Date getArrivalDate() { return this.arrivalDate;}
     public HashMap<String, Boolean> getCompany() { return this.company;}
     //
+    //public String getTravel_Location() {return new UserLocationConverter().asString(this.travelLocation);}
     public String getRequest_Type() { return RequestType.getTypeInt(this.requestType).toString();}
     public String getNumberPassengers() {return this.numPassengers.toString();}
     public String getTravel_Date() { return new DateConverter().dateToTimestamp(this.travelDate);}

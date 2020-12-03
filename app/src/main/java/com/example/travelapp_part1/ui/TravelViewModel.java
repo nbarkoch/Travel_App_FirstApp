@@ -5,6 +5,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingAdapter;
@@ -17,10 +18,14 @@ import com.example.travelapp_part1.Entities.Travel;
 import com.example.travelapp_part1.R;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TravelViewModel extends ViewModel {
 
     public FormTravel form = new FormTravel();
-
+    static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
 
     private TravelRepository repository;
@@ -104,6 +109,10 @@ public class TravelViewModel extends ViewModel {
         };
     }
 
+    public void saveTravelOnClick(View view){
+        saveTravel(form.getTravel());
+    }
+
     public void saveTravel(Travel trouble) {
         TravelRepository.saveTravel(trouble);
     }
@@ -131,8 +140,80 @@ public class TravelViewModel extends ViewModel {
     }
 
 
+    @BindingAdapter("android:text")
+    public static void setIntegerText(TextView view, Integer value) {
+        boolean setValue = view.getText().length() == 0;
+        try {
+            if (!setValue) {
+                setValue = Integer.parseInt(view.getText().toString()) != value;
+            }
+        } catch (NumberFormatException e) {
+            return;
+        }
+//        if (setValue) {
+//            view.setText(String.valueOf(value));
+//        }
+    }
 
-    /// check if the fields are valid
-    //
+    @InverseBindingAdapter(attribute = "android:text")
+    public static Integer getIntegerText(TextView view) {
+        try {
+            return Integer.parseInt(view.getText().toString());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+
+
+
+    @BindingAdapter("android:text")
+    public static void setDateText(TextView view, Date value) {
+        boolean setValue = view.getText().length() == 0;
+        try {
+            if (!setValue) {
+                setValue = format.parse(view.getText().toString()) != value;
+            }
+        } catch (ParseException e) {
+        }
+    }
+
+    @InverseBindingAdapter(attribute = "android:text")
+    public static Date getDateText(TextView view) {
+        try {
+            return format.parse(view.getText().toString());
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+
+    //TODO if relevant
+    @BindingAdapter(value = {"onTextChange", "textAttrChanged"}, requireAll = false)
+    public static void setTextListener(TextView view,
+                                       final TextWatcher listener,
+                                       final InverseBindingListener textChange) {
+        if (textChange == null) {
+            view.addTextChangedListener(listener);
+        } else {
+            view.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (listener != null){
+                        listener.onTextChanged(s, start, before, count);
+                    }
+                    else {
+                        textChange.onChange();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        }
+    }
 
 }

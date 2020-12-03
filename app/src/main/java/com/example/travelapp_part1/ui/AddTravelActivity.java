@@ -34,21 +34,8 @@ import java.util.List;
 
 public class AddTravelActivity extends AppCompatActivity {
 
-    // google map
-
 
     private TravelViewModel travelViewModel;
-    private EditText editTextClientName;
-    private EditText editTextClientPhone;
-    private EditText editTextClientEmail;
-    private EditText editTextNumPassengers;
-    private EditText editTextClientTargetLocX;
-    private EditText editTextClientTargetLocY;
-    private EditText editTextClientSourceLocX;
-    private EditText editTextClientSourceLocY;
-    private TextView editTextViewError;
-    EditText editTextTravelDate;
-    EditText editTextArrivalDate;
     UserLocation sourceLocation;
     List<UserLocation> destLocations;
     Travel travel;
@@ -61,7 +48,6 @@ public class AddTravelActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityTravelBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_travel);
-        //setContentView(R.layout.activity_travel);
         travel = new Travel();
         destLocations = new LinkedList<>();
         travelViewModel = new ViewModelProvider(this).get(TravelViewModel.class);
@@ -80,76 +66,6 @@ public class AddTravelActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-
-    public void sendRequest_onClick(View view) throws ParseException, IllegalAccessException {
-        try{
-
-            String clientName;
-            if(this.editTextClientName.getText().toString().equals(""))
-                clientName = null;
-            else
-                clientName = this.editTextClientName.getText().toString();
-
-            String clientPhone;
-            if(this.editTextClientPhone.getText().toString().equals(""))
-                clientPhone = null;
-            else
-                clientPhone = this.editTextClientPhone.getText().toString();
-
-            String clientEmail;
-            if(this.editTextClientEmail.getText().toString().equals(""))
-                clientEmail = null;
-            else
-                clientEmail = this.editTextClientEmail.getText().toString();
-
-            Integer numPassengers;
-            if(this.editTextNumPassengers.getText().toString().equals(""))
-                numPassengers = null;
-            else
-                numPassengers = Integer.valueOf(this.editTextNumPassengers.getText().toString());
-
-            Date travelDate;
-            if(this.editTextTravelDate.getText().toString().equals(""))
-                travelDate = null;
-            else
-                travelDate = new Travel.DateConverter().fromTimestamp(editTextTravelDate.getText().toString());
-
-            Date arrivalDate;
-            if(this.editTextArrivalDate.getText().toString().equals(""))
-                arrivalDate = null;
-            else
-                arrivalDate = new Travel.DateConverter().fromTimestamp(editTextArrivalDate.getText().toString());
-
-            double travelLocationX, travelLocationY;
-            UserLocation travelLocation;
-            if(this.editTextClientSourceLocX.getText().toString().equals("") ||
-                    this.editTextClientSourceLocX.getText().toString().equals(""))
-                travelLocation = null;
-            else{
-                travelLocationX = Double.parseDouble(this.editTextClientSourceLocX.getText().toString());
-                travelLocationY = Double.parseDouble(this.editTextClientSourceLocY.getText().toString());
-                travelLocation = new UserLocation(travelLocationX,travelLocationY);
-            }
-
-//        Travel trouble = new Travel( clientName,clientPhone, clientEmail, numPassengers,
-//                travelLocation, destLocations, travelDate, arrivalDate);
-            travel.setClientName(clientName);
-            travel.setClientPhone(clientPhone);
-            travel.setClientEmail(clientEmail);
-            travel.setNumPassengers(numPassengers);
-            travel.setTravelDate(travelDate);
-            travel.setArrivalDate(arrivalDate);
-            travel.setTravelLocation(travelLocation);
-            travel.setDestLocations(destLocations);
-
-            travelViewModel.saveTravel(travel);
-            editTextViewError.setText("");
-        }
-        catch(Exception exception){
-            editTextViewError.setText(exception.getMessage());
-        }
-
-    }
 
     public void addRequest_onClick(View view){
         Toast.makeText(AddTravelActivity.this, "Michael ha Gever", Toast.LENGTH_LONG).show();
@@ -184,8 +100,13 @@ public class AddTravelActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(data != null) {
             Bundle LocationsData = data.getExtras();
-            sourceLocation = (UserLocation) LocationsData.getParcelable("SRC_LOC");
-            destLocations =  data.getParcelableArrayListExtra("LIST_DST");
+            travelViewModel.form.setDestLocations( data.getParcelableArrayListExtra("LIST_DST"));
+            //TODO
+            travelViewModel.form.setTravelLocation((UserLocation) LocationsData.getParcelable("SRC_LOC"));
+
+//            sourceLocation = (UserLocation) LocationsData.getParcelable("SRC_LOC");
+//            destLocations =  data.getParcelableArrayListExtra("LIST_DST");
+            //TODO
             userLocationsView.clear();
             userLocationsView.addAll(data.getStringArrayListExtra("LIST_VIEW"));
             adapter.notifyDataSetChanged();

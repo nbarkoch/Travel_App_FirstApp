@@ -26,6 +26,7 @@
                 android:id="@+id/IdClientName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.form.clientName}"
                 android:hint="Client Name"
                 />
 
@@ -142,8 +143,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="send"
-                android:onClick="addRequest_onClick"
+                android:onClick="@{viewModel.saveTravelOnClick}"
                 android:enabled="@{viewModel.form.valid}"/>
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
