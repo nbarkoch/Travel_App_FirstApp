@@ -38,7 +38,7 @@
                 android:inputType="phone"
                 android:text="@={viewModel.form.phoneNumber}"
                 app:error = "@{viewModel.form.phoneError}"
-                app:onFocus="@{viewModel.focusPhoneChangeListener}"
+                app:ValidationOnFocus="@{viewModel.form.isPhoneValid}"
                 />
 
             <EditText
@@ -49,7 +49,7 @@
                 android:inputType="textEmailAddress"
                 android:text="@={viewModel.form.email}"
                 app:error = "@{viewModel.form.emailError}"
-                app:onFocus="@{viewModel.focusEmailChangeListener}"
+                app:ValidationOnFocus="@{viewModel.form.isEmailValid}"
                 />
             <EditText
                 android:id="@+id/IdNumPassengers"
@@ -59,7 +59,7 @@
                 android:inputType="number"
                 android:text="@={viewModel.form.numPassengers}"
                 app:error = "@{viewModel.form.numPassengersError}"
-                app:onFocus="@{viewModel.focusNPassengersChangeListener}"
+                app:ValidationOnFocus="@{viewModel.form.isNumPassengersValid}"
                 />
             <TextView
                 android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                 android:onClick="onClickCalender"
                 android:text="@={viewModel.form.dateBegin}"
                 app:error = "@{viewModel.form.dateError}"
-                app:onFocus="@{viewModel.focusDateBeginChangeListener}"/>
+                app:ValidationOnFocus="@{viewModel.form.isDatesValid}"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                 android:onClick="onClickCalender"
                 android:text="@={viewModel.form.dateEnd}"
                 app:error = "@{viewModel.form.dateError}"
-                app:onFocus="@{viewModel.focusDateEndChangeListener}"/>
+                app:ValidationOnFocus="@{viewModel.form.isDatesValid}"/>
 
             <TextView
                 android:paddingLeft="16dp"

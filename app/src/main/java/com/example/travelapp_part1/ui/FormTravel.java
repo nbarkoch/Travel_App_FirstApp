@@ -41,7 +41,7 @@ public class FormTravel extends BaseObservable {
         boolean validEmail = isEmailValid(false);
         boolean validNumPassengers = isNumPassengersValid(false);
         boolean notEmpty = ((getClientName() != null && !getClientName().equals("")) &&
-                 getDestLocations() != null && null != getTravelLocation());
+                 getDestLocations() != null &&  getTravelLocation()!=null);
         return  isDatesValid(false) &&
                 validPhoneNumber && validEmail && validNumPassengers && notEmpty;
     }
@@ -55,7 +55,6 @@ public class FormTravel extends BaseObservable {
         travel.setClientName(clientName);
         notifyPropertyChanged(BR.valid);
     }
-
 
 
     public void setPhoneNumber(String phoneNumber) {
