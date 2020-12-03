@@ -103,9 +103,6 @@ public class AddTravelActivity extends AppCompatActivity {
             travelViewModel.form.setDestLocations( data.getParcelableArrayListExtra("LIST_DST"));
             //TODO
             travelViewModel.form.setTravelLocation((UserLocation) LocationsData.getParcelable("SRC_LOC"));
-
-//            sourceLocation = (UserLocation) LocationsData.getParcelable("SRC_LOC");
-//            destLocations =  data.getParcelableArrayListExtra("LIST_DST");
             //TODO
             userLocationsView.clear();
             userLocationsView.addAll(data.getStringArrayListExtra("LIST_VIEW"));
