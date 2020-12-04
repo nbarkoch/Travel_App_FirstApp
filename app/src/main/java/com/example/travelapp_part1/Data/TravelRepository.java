@@ -2,7 +2,7 @@ package com.example.travelapp_part1.Data;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.travelapp_part1.Entities.Travel;
+import com.example.travelapp_part1.entities.Travel;
 
 public class TravelRepository {
     private static TravelDataSource travelDataSource;

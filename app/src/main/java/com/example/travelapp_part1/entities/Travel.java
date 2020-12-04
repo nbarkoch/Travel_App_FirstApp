@@ -1,4 +1,4 @@
-package com.example.travelapp_part1.Entities;
+package com.example.travelapp_part1.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -6,18 +6,13 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
-import com.google.firebase.database.Exclude;
-import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.database.annotations.NotNull;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 @Entity
@@ -25,27 +20,27 @@ public class Travel {
     @NonNull
     @PrimaryKey
     private String travelId = "id";
-    private String clientName; // 1 0102 // not null
-	private String clientPhone; // regular exp // not null
-    private String clientEmail; // regular exp // not null
-	private Integer numPassengers = 0; // >0 // not null
+    private String clientName;
+	private String clientPhone;
+    private String clientEmail;
+	private Integer numPassengers = 0;
 	
 	@TypeConverters(UserLocationConverter.class)
-	private UserLocation travelLocation; // not null
+	private UserLocation travelLocation;
 
     private List<UserLocation> destLocations;
 	
 	@TypeConverters(RequestType.class)
-    private RequestType requestType; // not a field
+    private RequestType requestType;
 
     @TypeConverters(DateConverter.class)
-    private Date travelDate; // date >= today // not null
+    private Date travelDate;
 	
     @TypeConverters(DateConverter.class)
-    private Date arrivalDate; // not null // date1 < date2
+    private Date arrivalDate;
 	
 		
-	private HashMap<String, Boolean> company; // not a field
+	private HashMap<String, Boolean> company;
     
     // with these methods the fire base can place all the members in our class
 	public String getId(){
@@ -54,7 +49,6 @@ public class Travel {
     public String getClientName() {return this.clientName; }
     public String getClientPhone() {return this.clientPhone; }
     public String getClientEmail() {return this.clientEmail; }
-    //
     public Integer getNumPassengers() { return this.numPassengers; }
     public UserLocation getTravelLocation() {return this.travelLocation;}
     public List<UserLocation> getDestLocations() { return destLocations; }
@@ -65,21 +59,6 @@ public class Travel {
 
 
     public Travel() {
-    }
-
-
-    public Travel( String clientName, String clientPhone, String clientEmail, Integer numPassengers,
-                  UserLocation travelLocation, List<UserLocation> destLocations, Date travelDate, Date arrivalDate) {
-        this.clientName = clientName;
-        this.clientPhone =  clientPhone;
-        this.clientEmail = clientEmail;
-        this.numPassengers = numPassengers;
-        this.travelLocation = travelLocation;
-        this.destLocations = destLocations;
-        this.requestType = RequestType.sent;
-        this.travelDate = travelDate;
-        this.arrivalDate = arrivalDate;
-        this.company = new HashMap<String, Boolean>();
     }
 
     public void setTravelId(String id) {
@@ -130,7 +109,7 @@ public class Travel {
     }
 
     public static class DateConverter {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
         @TypeConverter
         public Date fromTimestamp(String date) throws ParseException {

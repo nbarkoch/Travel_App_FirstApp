@@ -6,7 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.travelapp_part1.Entities.UserLocation;
+import com.example.travelapp_part1.entities.UserLocation;
 import com.example.travelapp_part1.R;
 
 import androidx.appcompat.app.AlertDialog;

@@ -1,27 +1,14 @@
 package com.example.travelapp_part1.ui;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import androidx.databinding.BindingAdapter;
-import androidx.databinding.InverseBindingAdapter;
-import androidx.databinding.InverseBindingListener;
-import androidx.databinding.InverseMethod;
 import androidx.databinding.ObservableField;
 
 import com.example.travelapp_part1.BR;
-import com.example.travelapp_part1.Entities.Travel;
-import com.example.travelapp_part1.Entities.UserLocation;
+import com.example.travelapp_part1.entities.Travel;
+import com.example.travelapp_part1.entities.UserLocation;
 import com.example.travelapp_part1.R;
 
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;

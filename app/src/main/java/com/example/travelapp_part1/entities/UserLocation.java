@@ -1,4 +1,4 @@
-package com.example.travelapp_part1.Entities;
+package com.example.travelapp_part1.entities;
 
 import android.location.Location;
 import android.os.Parcel;

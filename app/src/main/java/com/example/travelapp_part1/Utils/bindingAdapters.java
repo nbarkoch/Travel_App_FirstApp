@@ -18,8 +18,9 @@ import java.util.Locale;
 public class bindingAdapters {
     public interface Validation
     {
-        public boolean validete(boolean setMsg);
+        public boolean validate(boolean setMsg);
     }
+
     static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
     @BindingAdapter("error")
     public static void setError(EditText editText, Object strOrResId) {
@@ -28,7 +29,6 @@ public class bindingAdapters {
         } else {
             editText.setError((String) strOrResId);
         }
-
     }
 
     @BindingAdapter("ValidationOnFocus")
@@ -36,7 +36,7 @@ public class bindingAdapters {
         View.OnFocusChangeListener onFocusChangeListener = (view, hasFocus) -> {
             EditText et = (EditText) view;
             if (et.getText().length() > 0 && !hasFocus) {
-                validation.validete(true);
+                validation.validate(true);
             }
         };
         editText.setOnFocusChangeListener(onFocusChangeListener);
@@ -52,17 +52,7 @@ public class bindingAdapters {
 
     @BindingAdapter("android:text")
     public static void setIntegerText(TextView view, Integer value) {
-        boolean setValue = view.getText().length() == 0;
-        try {
-            if (!setValue) {
-                setValue = Integer.parseInt(view.getText().toString()) != value;
-            }
-        } catch (NumberFormatException e) {
-            //return;
-        }
-//        if (setValue) {
-//            view.setText(String.valueOf(value));
-//        }
+        // this function written only because we need one-way to source binding
     }
 
     @InverseBindingAdapter(attribute = "android:text")
@@ -74,18 +64,17 @@ public class bindingAdapters {
         }
     }
 
-
+    @BindingAdapter("android:text")
+    public static void setDoubleText(TextView view, Double value) {
+        // this function written only because we need one-way to source binding
+        view.setText(value.toString());
+    }
 
 
     @BindingAdapter("android:text")
     public static void setDateText(TextView view, Date value) {
-        boolean setValue = view.getText().length() == 0;
-        try {
-            if (!setValue) {
-                setValue = format.parse(view.getText().toString()) != value;
-            }
-        } catch (ParseException e) {
-        }
+        // this function written only because we need one-way to source binding
+
     }
 
     @InverseBindingAdapter(attribute = "android:text")
@@ -97,33 +86,5 @@ public class bindingAdapters {
         }
     }
 
-
-    //TODO if relevant
-    @BindingAdapter(value = {"onTextChange", "textAttrChanged"}, requireAll = false)
-    public static void setTextListener(TextView view,
-                                       final TextWatcher listener,
-                                       final InverseBindingListener textChange) {
-        if (textChange == null) {
-            view.addTextChangedListener(listener);
-        } else {
-            view.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (listener != null){
-                        listener.onTextChanged(s, start, before, count);
-                    }
-                    else {
-                        textChange.onChange();
-                    }
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {}
-            });
-        }
-    }
 
 }
