@@ -87,4 +87,18 @@ public class bindingAdapters {
     }
 
 
+    @BindingAdapter("ValidationOnFocusCalender")
+    public static void setValidationDate(EditText editText, Validation validation) {
+        View.OnFocusChangeListener onFocusChangeListener = (view, hasFocus) -> {
+            EditText et = (EditText) view;
+            if (hasFocus && (et.getError() == null))
+                et.callOnClick();
+            if (et.getText().length() > 0 && !hasFocus) {
+                validation.validate(true);
+            }
+        };
+        editText.setOnFocusChangeListener(onFocusChangeListener);
+    }
+
+
 }

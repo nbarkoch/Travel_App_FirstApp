@@ -1,5 +1,7 @@
 package com.example.travelapp_part1.ui;
 
+import android.icu.util.GregorianCalendar;
+
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.ObservableField;
@@ -10,6 +12,7 @@ import com.example.travelapp_part1.entities.UserLocation;
 import com.example.travelapp_part1.R;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,6 +24,7 @@ public class FormTravel extends BaseObservable {
     public ObservableField<Integer> emailError = new ObservableField<>();
     public ObservableField<Integer> numPassengersError = new ObservableField<>();
     public ObservableField<Integer> dateError = new ObservableField<>();
+
 
     @Bindable
     public boolean isValid() {
@@ -163,11 +167,41 @@ public class FormTravel extends BaseObservable {
             return false;
         if(getDateBegin().after(getDateEnd())) {
             if (setMsg)
-                dateError.set(R.string.date_not_valid);
+                dateError.set(R.string.dates_not_valid);
             return false;
         }
         dateError.set(null);
         return true;
     }
+
+    // these above not relevant because:
+        // if the input is illegal (example: fg201/12/2020) then it will receive from travel.getDate null value
+        // if the input is numeric illegal (example: 2000000/12/2020) then it will cast it to days and months..
+
+//    public boolean isBeginDateValid(boolean setMsg){
+//        if(getDateBegin() == null)
+//            return false;
+//        String regex = "^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$";
+//        if(!RegexValidation(Travel.DateConverter.dateToTimestamp(getDateBegin()),regex)) {
+//            if (setMsg)
+//                dateError.set(R.string.date_not_valid);
+//            return false;
+//        }
+//        dateError.set(null);
+//        return isDatesValid(setMsg);
+//    }
+//
+//    public boolean isEndDateValid(boolean setMsg){
+//        if(getDateEnd() == null)
+//            return false;
+//        String regex = "^([0-2][0-9]||3[0-1])/([0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$";
+//        if(!RegexValidation(Travel.DateConverter.dateToTimestamp(getDateEnd()),regex)) {
+//            if (setMsg)
+//                dateError.set(R.string.date_not_valid);
+//            return false;
+//        }
+//        dateError.set(null);
+//        return isDatesValid(setMsg);
+//    }
 
 }

@@ -1,50 +1,61 @@
 package com.example.travelapp_part1.entities;
 
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
+import com.example.travelapp_part1.entities.UserLocation;
+import com.google.firebase.database.Exclude;
+
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-
-@Entity
+@Entity (tableName = "travels")
 public class Travel {
     @NonNull
     @PrimaryKey
     private String travelId = "id";
     private String clientName;
-	private String clientPhone;
+    private String clientPhone;
     private String clientEmail;
-	private Integer numPassengers = 0;
-	
-	@TypeConverters(UserLocationConverter.class)
-	private UserLocation travelLocation;
+    private Integer numPassengers = 0;
 
+    @TypeConverters(UserLocationConverter.class)
+    private UserLocation travelLocation;
+
+    @TypeConverters(UserLocationsConverter.class)
     private List<UserLocation> destLocations;
-	
-	@TypeConverters(RequestType.class)
+
+    @TypeConverters(RequestType.class)
     private RequestType requestType;
 
     @TypeConverters(DateConverter.class)
     private Date travelDate;
-	
+
     @TypeConverters(DateConverter.class)
     private Date arrivalDate;
-	
-		
-	private HashMap<String, Boolean> company;
-    
+
+    @TypeConverters(DateConverter.class)
+    private Date createDate;
+
+    private HashMap<String, Boolean> company;
+
     // with these methods the fire base can place all the members in our class
-	public String getId(){
-	    return this.travelId;
+    public String getTravelId(){
+        return this.travelId;
     }
     public String getClientName() {return this.clientName; }
     public String getClientPhone() {return this.clientPhone; }
@@ -55,6 +66,7 @@ public class Travel {
     public RequestType getRequestType() { return this.requestType;}
     public Date getTravelDate() { return this.travelDate;}
     public Date getArrivalDate() { return this.arrivalDate;}
+    public Date getCreateDate() { return this.createDate;}
     public HashMap<String, Boolean> getCompany() { return this.company;}
 
 
@@ -62,8 +74,8 @@ public class Travel {
     }
 
     public void setTravelId(String id) {
-	    if (id != null)
-	        this.travelId = id;
+        if (id != null)
+            this.travelId = id;
     }
 
     public void setCompany(HashMap<String, Boolean> company) {
@@ -81,8 +93,6 @@ public class Travel {
     public void setClientPhone(String clientPhone)  {
         this.clientPhone = clientPhone;
     }
-
-
 
     public void setClientEmail(String clientEmail) {
         this.clientEmail = clientEmail;
@@ -108,24 +118,28 @@ public class Travel {
         this.arrivalDate = arrivalDate;
     }
 
+    public void setCreateDate(Date createDate)  {
+        this.createDate = createDate;
+    }
+
     public static class DateConverter {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        static SimpleDateFormat  format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
         @TypeConverter
-        public Date fromTimestamp(String date) throws ParseException {
+        public static  Date fromTimestamp(String date) throws ParseException {
             return (date == null ? null : format.parse(date));
         }
 
         @TypeConverter
-        public String dateToTimestamp(Date date) {
+        public static String dateToTimestamp(Date date) {
             return date == null ? null : format.format(date);
         }
     }
-	
-	
-	
-	public enum RequestType {
-        sent(0), accepted(1), run(2), close(3);
+
+
+
+    public enum RequestType {
+        sent(0), accepted(1), run(2), close(3), paid(4);
         private final Integer code;
         RequestType(Integer value) {
             this.code = value;
@@ -147,11 +161,11 @@ public class Travel {
             return null;
         }
     }
-	
-	
-	
-	
-	 public static class CompanyConverter {
+
+
+
+
+    public static class CompanyConverter {
         @TypeConverter
         public HashMap<String, Boolean> fromString(String value) {
             if (value == null || value.isEmpty())
@@ -195,6 +209,63 @@ public class Travel {
             return warehouseUserLocation == null ? "" : warehouseUserLocation.getLat() + " " + warehouseUserLocation.getLon();
         }
     }
+
+
+    //    private List<UserLocation> destLocations;
+    public static class UserLocationsConverter {
+        @TypeConverter
+        public List<UserLocation> fromString(String value) {
+            if (value == null || value.isEmpty())
+                return null;
+            String[] mapString = value.split(","); //split map into array of (string,boolean) strings
+            List<UserLocation> destLocations = new ArrayList<UserLocation>();
+            for (String s1 : mapString) //for all (string,boolean) in the map string
+            {
+                if (!s1.isEmpty()) {//is empty maybe will needed because the last char in the string is ","
+                    double lat = Double.parseDouble(s1.split(" ")[0]);
+                    double lang = Double.parseDouble(s1.split(" ")[1]);
+                    destLocations.add(/*company string:*/new UserLocation(lat, lang));
+                }
+            }
+            return destLocations;
+        }
+
+        @TypeConverter
+        public String asString(List<UserLocation> warehouseUserLocation) {
+            if (warehouseUserLocation == null)
+                return null;
+            StringBuilder locationsString = new StringBuilder();
+            for (UserLocation ul : warehouseUserLocation)
+                locationsString.append(ul.getLat()).append(" ").append(ul.getLon()).append(",");
+            return locationsString.toString();
+        }
+
+
+    }
+
+    @Override
+    public String toString() {
+        return "Travel{" +
+                "travelId='" + travelId + '\'' +
+                ", clientName='" + clientName + '\'' +
+                ", numPassengers=" + numPassengers +
+                '}';
+    }
+
+    @Exclude
+    @Ignore
+    public List<String> getCompanyKeys(){
+        return company!=null? new ArrayList<String>( company.keySet()) : null;
+    }
+
+    @Exclude
+    @Ignore
+    public long getTotalDays(){
+        long diff = arrivalDate.getTime() - travelDate.getTime();
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    }
+
 }
-	
+
+
 	

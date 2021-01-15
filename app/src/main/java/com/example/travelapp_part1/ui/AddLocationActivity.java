@@ -30,8 +30,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class AddLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
@@ -250,9 +252,9 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         UserLocation location = new UserLocation(latitude, longitude);
         userLocations.set(position, location);
         if (position == 0)
-            userLocationsView.set(position, "Source Location: " + location);
+            userLocationsView.set(position, "Source Location: " + getPlace(location));
         else
-            userLocationsView.set(position, "Target Location: " + location);
+            userLocationsView.set(position, "Target Location: " + getPlace(location));
         adapter.notifyDataSetChanged();
         locationTv.setText("Latitude:" + latitude + ", Longitude:" + longitude);
     }
@@ -341,7 +343,7 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         int position = userLocationsView.size();
         latLng = defaultLocation;
         UserLocation location = new UserLocation(latLng.latitude, latLng.longitude);
-        userLocationsView.add(locationType + location);
+        userLocationsView.add(locationType + getPlace(location));
         userLocations.add(location);
         markers.add(
                 map.addMarker(new MarkerOptions()
@@ -377,5 +379,28 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         doneButton.setEnabled(userLocations.size() >= 2);
     }
 
+
+    /**
+     * function that receive a lat-lon location and translates it to understandable address
+     * @param location UserLocation instant
+     * @return string address
+     */
+    public String getPlace(UserLocation location) {
+        Geocoder geocoder = new Geocoder(this.getBaseContext(), Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(location.getLat(), location.getLon(), 1);
+            if (addresses.size() > 0) {
+                return addresses.get(0).getAddressLine(0);
+            }
+            return "unknown place: \n ("+location.getLat()+", "+location.getLon()+")";
+        }
+        catch(
+                IOException e)
+        {
+            e.printStackTrace();
+        }
+        return "IOException ...";
+    }
 
 }

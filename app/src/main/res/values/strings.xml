@@ -2,8 +2,10 @@
     <string name="app_name">Add Travel</string>
     <!--    <string name="empty_field_error">The field can\'t be empty</string>-->
     <string name="email_not_valid">Email not valid</string>
-    <string name="phone_not_valid">phone number is illegal</string>
-    <string name="date_not_valid">the begin of travel date can\'t be after the end of travel date</string>
-    <string name="numPassengers_not_valid">number of passengers should be at least one</string>
+    <string name="phone_not_valid">Phone number is illegal</string>
+    <string name="date_not_valid">Date not valid</string>
+    <string name="date_too_early">At least one of the dates is too early</string>
+    <string name="dates_not_valid">The begin of travel date can\'t be after the end of travel date</string>
+    <string name="numPassengers_not_valid">Number of passengers should be at least one</string>
     <string name="select_location_description">Select your starting location and your destination locations for your travel</string>
 </resources>

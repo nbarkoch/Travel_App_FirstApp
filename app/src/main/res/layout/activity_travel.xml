@@ -18,17 +18,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:orientation="vertical">
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
 
             <EditText
                 android:id="@+id/IdClientName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={viewModel.form.clientName}"
                 android:hint="Client Name"
-                />
+                android:inputType="text"
+                android:text="@={viewModel.form.clientName}" />
 
             <EditText
                 android:id="@+id/IdClientPhone"
@@ -37,9 +39,8 @@
                 android:hint="Client Phone Number"
                 android:inputType="phone"
                 android:text="@={viewModel.form.phoneNumber}"
-                app:error = "@{viewModel.form.phoneError}"
                 app:ValidationOnFocus="@{viewModel.form.isPhoneValid}"
-                />
+                app:error="@{viewModel.form.phoneError}" />
 
             <EditText
                 android:id="@+id/IdClientEmail"
@@ -48,9 +49,9 @@
                 android:hint="Client Email Address"
                 android:inputType="textEmailAddress"
                 android:text="@={viewModel.form.email}"
-                app:error = "@{viewModel.form.emailError}"
                 app:ValidationOnFocus="@{viewModel.form.isEmailValid}"
-                />
+                app:error="@{viewModel.form.emailError}" />
+
             <EditText
                 android:id="@+id/IdNumPassengers"
                 android:layout_width="match_parent"
@@ -58,9 +59,9 @@
                 android:hint="Number Of Passengers"
                 android:inputType="number"
                 android:text="@={viewModel.form.numPassengers}"
-                app:error = "@{viewModel.form.numPassengersError}"
                 app:ValidationOnFocus="@{viewModel.form.isNumPassengersValid}"
-                />
+                app:error="@{viewModel.form.numPassengersError}" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,10 +73,11 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Enter Date"
+                android:inputType="date"
                 android:onClick="onClickCalender"
                 android:text="@={viewModel.form.dateBegin}"
-                app:error = "@{viewModel.form.dateError}"
-                app:ValidationOnFocus="@{viewModel.form.isDatesValid}"/>
+                app:ValidationOnFocusCalender="@{viewModel.form.isDatesValid}"
+                app:error="@{viewModel.form.dateError}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -88,19 +90,20 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Enter Date"
+                android:inputType="date"
                 android:onClick="onClickCalender"
                 android:text="@={viewModel.form.dateEnd}"
-                app:error = "@{viewModel.form.dateError}"
-                app:ValidationOnFocus="@{viewModel.form.isDatesValid}"/>
+                app:ValidationOnFocusCalender="@{viewModel.form.isDatesValid}"
+                app:error="@{viewModel.form.dateError}" />
 
             <TextView
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#3C85B6"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="10dp"
                 android:text="@string/select_location_description"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
@@ -119,32 +122,36 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="add locations"
-                    android:onClick="addLocation_onClick" />
+                    android:layout_weight="1"
+                    android:onClick="addLocation_onClick"
+                    android:text="add locations" />
 
             </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="first location is source location"/>
+                android:hint="first location is source location" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="60sp">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
+
             <Button
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="send"
+                android:enabled="@{viewModel.form.valid}"
                 android:onClick="@{viewModel.saveTravelOnClick}"
-                android:enabled="@{viewModel.form.valid}"/>
+                android:text="send" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
