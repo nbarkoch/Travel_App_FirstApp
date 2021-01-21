@@ -1,6 +1,5 @@
 package com.example.travelapp_part1.entities;
 
-
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -8,14 +7,11 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
-import com.example.travelapp_part1.entities.UserLocation;
 import com.google.firebase.database.Exclude;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +19,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@Entity (tableName = "travels")
+@Entity(tableName = "travels")
 public class Travel {
     @NonNull
     @PrimaryKey
@@ -54,20 +50,53 @@ public class Travel {
     private HashMap<String, Boolean> company;
 
     // with these methods the fire base can place all the members in our class
-    public String getTravelId(){
+    public String getTravelId() {
         return this.travelId;
     }
-    public String getClientName() {return this.clientName; }
-    public String getClientPhone() {return this.clientPhone; }
-    public String getClientEmail() {return this.clientEmail; }
-    public Integer getNumPassengers() { return this.numPassengers; }
-    public UserLocation getTravelLocation() {return this.travelLocation;}
-    public List<UserLocation> getDestLocations() { return destLocations; }
-    public RequestType getRequestType() { return this.requestType;}
-    public Date getTravelDate() { return this.travelDate;}
-    public Date getArrivalDate() { return this.arrivalDate;}
-    public Date getCreateDate() { return this.createDate;}
-    public HashMap<String, Boolean> getCompany() { return this.company;}
+
+    public String getClientName() {
+        return this.clientName;
+    }
+
+    public String getClientPhone() {
+        return this.clientPhone;
+    }
+
+    public String getClientEmail() {
+        return this.clientEmail;
+    }
+
+    public Integer getNumPassengers() {
+        return this.numPassengers;
+    }
+
+    public UserLocation getTravelLocation() {
+        return this.travelLocation;
+    }
+
+    public List<UserLocation> getDestLocations() {
+        return destLocations;
+    }
+
+    public RequestType getRequestType() {
+        return this.requestType;
+    }
+
+    public Date getTravelDate() {
+        return this.travelDate;
+    }
+
+    public Date getArrivalDate() {
+        return this.arrivalDate;
+    }
+
+    public Date getCreateDate() {
+        return this.createDate;
+    }
+
+    public HashMap<String, Boolean> getCompany() {
+        return this.company;
+    }
 
 
     public Travel() {
@@ -86,11 +115,11 @@ public class Travel {
         this.requestType = requestType;
     }
 
-    public void setClientName(String clientName)  {
+    public void setClientName(String clientName) {
         this.clientName = clientName;
     }
 
-    public void setClientPhone(String clientPhone)  {
+    public void setClientPhone(String clientPhone) {
         this.clientPhone = clientPhone;
     }
 
@@ -102,7 +131,7 @@ public class Travel {
         this.numPassengers = numPassengers;
     }
 
-    public void setTravelLocation(UserLocation travelLocation)  {
+    public void setTravelLocation(UserLocation travelLocation) {
         this.travelLocation = travelLocation;
     }
 
@@ -110,7 +139,7 @@ public class Travel {
         this.destLocations = destLocations;
     }
 
-    public void setTravelDate(Date travelDate)  {
+    public void setTravelDate(Date travelDate) {
         this.travelDate = travelDate;
     }
 
@@ -118,15 +147,15 @@ public class Travel {
         this.arrivalDate = arrivalDate;
     }
 
-    public void setCreateDate(Date createDate)  {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
     public static class DateConverter {
-        static SimpleDateFormat  format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
         @TypeConverter
-        public static  Date fromTimestamp(String date) throws ParseException {
+        public static Date fromTimestamp(String date) throws ParseException {
             return (date == null ? null : format.parse(date));
         }
 
@@ -137,16 +166,18 @@ public class Travel {
     }
 
 
-
     public enum RequestType {
         sent(0), accepted(1), run(2), close(3), paid(4);
         private final Integer code;
+
         RequestType(Integer value) {
             this.code = value;
         }
+
         public Integer getCode() {
             return code;
         }
+
         @TypeConverter
         public static RequestType getType(Integer numeral) {
             for (RequestType ds : values())
@@ -154,6 +185,7 @@ public class Travel {
                     return ds;
             return null;
         }
+
         @TypeConverter
         public static Integer getTypeInt(RequestType requestType) {
             if (requestType != null)
@@ -161,8 +193,6 @@ public class Travel {
             return null;
         }
     }
-
-
 
 
     public static class CompanyConverter {
@@ -211,7 +241,6 @@ public class Travel {
     }
 
 
-    //    private List<UserLocation> destLocations;
     public static class UserLocationsConverter {
         @TypeConverter
         public List<UserLocation> fromString(String value) {
@@ -252,20 +281,27 @@ public class Travel {
                 '}';
     }
 
+    /**
+     * is needed for showing only the company names in the user interface (useful for binding)
+     * @return the list of companies names(strings)
+     */
     @Exclude
     @Ignore
-    public List<String> getCompanyKeys(){
-        return company!=null? new ArrayList<String>( company.keySet()) : null;
+    public List<String> getCompanyKeys() {
+        return company != null ? new ArrayList<>(company.keySet()) : null;
     }
 
+    /**
+     * is needed for showing the total days (useful for binding)
+     * @return the total days from begin of travel till end of travel
+     */
     @Exclude
     @Ignore
-    public long getTotalDays(){
+    public long getTotalDays() {
         long diff = arrivalDate.getTime() - travelDate.getTime();
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
 }
-
 
 	

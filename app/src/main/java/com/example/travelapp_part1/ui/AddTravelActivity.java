@@ -51,6 +51,11 @@ public class AddTravelActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    /**
+     * function that bind to a view reference to a date selection onClick, it opens the calender.
+     * the view will have the selected date from the calender
+     * @param view (any view which by click we want to open calender for selection)
+     */
     public void onClickCalender(View view) {
         EditText editDate = (EditText) view;
         DatePickerDialog picker;
@@ -71,15 +76,20 @@ public class AddTravelActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
+    /**
+     * we want to get the results of the locations from the locations activity
+     * @param requestCode code request
+     * @param resultCode result code
+     * @param data the data is the intent came from the activity which we got into,
+     *            we will extract the data from it
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             Bundle LocationsData = data.getExtras();
             travelViewModel.form.setDestLocations(data.getParcelableArrayListExtra("LIST_DST"));
-            //TODO
             travelViewModel.form.setTravelLocation((UserLocation) LocationsData.getParcelable("SRC_LOC"));
-            //TODO
             userLocationsView.clear();
             userLocationsView.addAll(data.getStringArrayListExtra("LIST_VIEW"));
             adapter.notifyDataSetChanged();

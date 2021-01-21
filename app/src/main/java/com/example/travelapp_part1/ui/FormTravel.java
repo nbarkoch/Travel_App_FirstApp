@@ -1,7 +1,5 @@
 package com.example.travelapp_part1.ui;
 
-import android.icu.util.GregorianCalendar;
-
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.ObservableField;
@@ -12,7 +10,6 @@ import com.example.travelapp_part1.entities.UserLocation;
 import com.example.travelapp_part1.R;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
